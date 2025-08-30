@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/recommendations",
+            "destination": "/api/index"
+        }
+    ]
+}

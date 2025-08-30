@@ -1,0 +1,83 @@
+{
+  "Q1": {
+    "id": "Q1_THEME",
+    "question": "Pick the artwork theme",
+    "options": [
+      {
+        "logic_name": "THEME_ANIMAL",
+        "label": "Animal",
+        "count": 212
+      },
+      {
+        "logic_name": "SC_FLOWERS_PLANTS",
+        "label": "Flowers/Plants",
+        "count": 147
+      },
+      {
+        "logic_name": "SC_NATURE_LANDSCAPE",
+        "label": "Nature/Landscape",
+        "count": 79
+      },
+      {
+        "logic_name": "SC_PATTERN_ABSTRACT",
+        "label": "Pattern/Abstract",
+        "count": 13
+      },
+      {
+        "logic_name": "SC_SYMBOLS_EMBLEMS",
+        "label": "Symbols/Emblems",
+        "count": 12
+      },
+      {
+        "logic_name": "SC_VEHICLES_TRANSPORT",
+        "label": "Vehicles/Transport",
+        "count": 3
+      },
+      {
+        "logic_name": "SC_FOOD_DRINK",
+        "label": "Food & Drink",
+        "count": 2
+      },
+      {
+        "logic_name": "SC_OTHER_UNSPECIFIED",
+        "label": "Other (Unspecified)",
+        "count": 287
+      }
+    ],
+    "notes": "No generic 'Other' category; use named themes. 'Other (Unspecified)' is a specific fallback when no theme matches."
+  },
+  "Q2": {
+    "id": "Q2_PRODUCT",
+    "question": "Select the product type",
+    "options_source": "dataset_or_infer_from_text",
+    "known_types": [
+      "t-shirt",
+      "hoodie",
+      "sweatshirt",
+      "tank",
+      "long sleeve",
+      "mug",
+      "tumbler",
+      "bottle",
+      "poster",
+      "print",
+      "canvas",
+      "sticker",
+      "phone case",
+      "notebook",
+      "tote",
+      "pillow",
+      "blanket",
+      "magnet",
+      "coaster",
+      "cap",
+      "bag",
+      "pin",
+      "mat"
+    ],
+    "fallback": "Unknown"
+  },
+  "Routing": {
+    "Q1->Q2": "Always"
+  }
+}

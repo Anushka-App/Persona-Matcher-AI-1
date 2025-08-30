@@ -1,0 +1,444 @@
+{
+  "dimensions": {
+    "style": [
+      "Boldness",
+      "Elegance",
+      "Whimsy",
+      "Minimalism",
+      "Artistic Flair",
+      "Nature Affinity",
+      "Luxury Leaning",
+      "Versatility",
+      "Color Playfulness"
+    ],
+    "aaker": [
+      "Sincerity",
+      "Excitement",
+      "Competence",
+      "Sophistication",
+      "Ruggedness"
+    ]
+  },
+  "graph": {
+    "root": "Q1",
+    "nodes": {
+      "Q1": {
+        "branch": "Wild vs Refined Energy",
+        "question": "When you make an entrance, which energy feels right?",
+        "options": [
+          {
+            "text": "Untamed and kinetic",
+            "weights": {
+              "Boldness": 14,
+              "Excitement": 10,
+              "Ruggedness": 6
+            },
+            "next": "Q2A"
+          },
+          {
+            "text": "Artful and intriguing",
+            "weights": {
+              "Artistic Flair": 14,
+              "Sophistication": 6,
+              "Color Playfulness": 4
+            },
+            "next": "Q2B"
+          },
+          {
+            "text": "Calm and composed",
+            "weights": {
+              "Elegance": 12,
+              "Minimalism": 10,
+              "Sincerity": 6
+            },
+            "next": "Q2C"
+          },
+          {
+            "text": "Quiet but luminous",
+            "weights": {
+              "Whimsy": 10,
+              "Sincerity": 6,
+              "Sophistication": 4
+            },
+            "next": "Q2D"
+          }
+        ]
+      },
+      "Q2A": {
+        "branch": "A — Wild",
+        "question": "Pick a motif you would actually wear:",
+        "options": [
+          {
+            "text": "Leopard or tiger",
+            "weights": {
+              "Boldness": 12,
+              "Excitement": 10,
+              "Ruggedness": 6,
+              "Color Playfulness": 4
+            },
+            "next": "Q3A"
+          },
+          {
+            "text": "Jungle leaves",
+            "weights": {
+              "Nature Affinity": 12,
+              "Boldness": 6,
+              "Versatility": 4
+            },
+            "next": "Q3A"
+          },
+          {
+            "text": "Sunburst geometrics",
+            "weights": {
+              "Color Playfulness": 10,
+              "Boldness": 8,
+              "Excitement": 6
+            },
+            "next": "Q3A"
+          },
+          {
+            "text": "Trail-worn textures",
+            "weights": {
+              "Ruggedness": 10,
+              "Minimalism": 6,
+              "Competence": 6
+            },
+            "next": "Q3A"
+          }
+        ]
+      },
+      "Q3A": {
+        "branch": "A — Contrast & Function",
+        "question": "What matters more day-to-day?",
+        "options": [
+          {
+            "text": "Making a statement",
+            "weights": {
+              "Boldness": 10,
+              "Excitement": 8,
+              "Sophistication": 4
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Hands-free practicality",
+            "weights": {
+              "Versatility": 12,
+              "Competence": 8,
+              "Minimalism": 6
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Rich materials",
+            "weights": {
+              "Luxury Leaning": 12,
+              "Sophistication": 8
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Nature vibe, always",
+            "weights": {
+              "Nature Affinity": 12,
+              "Sincerity": 6
+            },
+            "next": "Q4"
+          }
+        ]
+      },
+      "Q2B": {
+        "branch": "B — Artistic",
+        "question": "Art on a bag should feel…",
+        "options": [
+          {
+            "text": "Abstract brushstrokes",
+            "weights": {
+              "Artistic Flair": 14,
+              "Color Playfulness": 6
+            },
+            "next": "Q3B"
+          },
+          {
+            "text": "Delicate florals",
+            "weights": {
+              "Nature Affinity": 10,
+              "Elegance": 6,
+              "Sincerity": 4
+            },
+            "next": "Q3B"
+          },
+          {
+            "text": "Celestial maps",
+            "weights": {
+              "Whimsy": 10,
+              "Sophistication": 6,
+              "Excitement": 4
+            },
+            "next": "Q3B"
+          },
+          {
+            "text": "Animal portraiture",
+            "weights": {
+              "Boldness": 10,
+              "Excitement": 6,
+              "Ruggedness": 4
+            },
+            "next": "Q3B"
+          }
+        ]
+      },
+      "Q3B": {
+        "branch": "B — Palette",
+        "question": "And the color mood?",
+        "options": [
+          {
+            "text": "Vibrant and high-contrast",
+            "weights": {
+              "Color Playfulness": 12,
+              "Boldness": 8,
+              "Excitement": 6
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Painterly and nuanced",
+            "weights": {
+              "Artistic Flair": 10,
+              "Sophistication": 6
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Soft, calm neutrals",
+            "weights": {
+              "Minimalism": 10,
+              "Versatility": 8,
+              "Sincerity": 4
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Deep jewel tones",
+            "weights": {
+              "Luxury Leaning": 10,
+              "Sophistication": 8
+            },
+            "next": "Q4"
+          }
+        ]
+      },
+      "Q2C": {
+        "branch": "C — Refined",
+        "question": "Which silhouette wins most days?",
+        "options": [
+          {
+            "text": "Slim crossbody",
+            "weights": {
+              "Minimalism": 10,
+              "Versatility": 10,
+              "Competence": 6
+            },
+            "next": "Q3C"
+          },
+          {
+            "text": "Structured satchel",
+            "weights": {
+              "Elegance": 10,
+              "Sophistication": 8,
+              "Competence": 6
+            },
+            "next": "Q3C"
+          },
+          {
+            "text": "Organized tote",
+            "weights": {
+              "Competence": 10,
+              "Versatility": 10
+            },
+            "next": "Q3C"
+          },
+          {
+            "text": "Compact backpack",
+            "weights": {
+              "Versatility": 8,
+              "Ruggedness": 6,
+              "Excitement": 4
+            },
+            "next": "Q3C"
+          }
+        ]
+      },
+      "Q3C": {
+        "branch": "C — Signature Detail",
+        "question": "Your signature detail is…",
+        "options": [
+          {
+            "text": "A clean line",
+            "weights": {
+              "Minimalism": 10,
+              "Elegance": 8
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "A subtle motif",
+            "weights": {
+              "Sincerity": 6,
+              "Nature Affinity": 6
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "A hidden pocket",
+            "weights": {
+              "Competence": 10,
+              "Versatility": 8
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "A small metal accent",
+            "weights": {
+              "Luxury Leaning": 8,
+              "Sophistication": 6
+            },
+            "next": "Q4"
+          }
+        ]
+      },
+      "Q2D": {
+        "branch": "D — Luminous Quiet",
+        "question": "Which symbol feels truest?",
+        "options": [
+          {
+            "text": "Lotus",
+            "weights": {
+              "Nature Affinity": 10,
+              "Sincerity": 6,
+              "Sophistication": 6
+            },
+            "next": "Q3D"
+          },
+          {
+            "text": "Moon & stars",
+            "weights": {
+              "Whimsy": 10,
+              "Sophistication": 6,
+              "Excitement": 4
+            },
+            "next": "Q3D"
+          },
+          {
+            "text": "Angel wings",
+            "weights": {
+              "Sincerity": 8,
+              "Elegance": 6,
+              "Sophistication": 4
+            },
+            "next": "Q3D"
+          },
+          {
+            "text": "Owl",
+            "weights": {
+              "Sincerity": 6,
+              "Competence": 6,
+              "Whimsy": 4
+            },
+            "next": "Q3D"
+          }
+        ]
+      },
+      "Q3D": {
+        "branch": "D — Finish Priority",
+        "question": "Pick your finish priority:",
+        "options": [
+          {
+            "text": "Soft-touch, matte",
+            "weights": {
+              "Sincerity": 6,
+              "Minimalism": 8
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Velvety sheen",
+            "weights": {
+              "Luxury Leaning": 10,
+              "Sophistication": 8
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Brushed hardware",
+            "weights": {
+              "Sophistication": 8,
+              "Competence": 6
+            },
+            "next": "Q4"
+          },
+          {
+            "text": "Sculpted stitching",
+            "weights": {
+              "Artistic Flair": 8,
+              "Sincerity": 6
+            },
+            "next": "Q4"
+          }
+        ]
+      },
+      "Q4": {
+        "branch": "E — Final Calibrators",
+        "question": "Last call—what do you never compromise on?",
+        "options": [
+          {
+            "text": "Statement value",
+            "weights": {
+              "Boldness": 10,
+              "Excitement": 8
+            },
+            "next": "END"
+          },
+          {
+            "text": "Craft and quality",
+            "weights": {
+              "Sophistication": 8,
+              "Luxury Leaning": 10
+            },
+            "next": "END"
+          },
+          {
+            "text": "Ease and organization",
+            "weights": {
+              "Versatility": 10,
+              "Competence": 8
+            },
+            "next": "END"
+          },
+          {
+            "text": "Calm, nature-led vibe",
+            "weights": {
+              "Nature Affinity": 10,
+              "Sincerity": 8
+            },
+            "next": "END"
+          }
+        ]
+      }
+    },
+    "stop_rule": {
+      "max_questions": 9,
+      "min_entropy": 0.22
+    }
+  },
+  "scoring": {
+    "similarity": "cosine",
+    "tie_breakers": [
+      "Boldness",
+      "Artistic Flair",
+      "Sophistication"
+    ],
+    "how_to_score": "Sum option weights across nodes visited to produce a 14-dim user vector (9 style + 5 Aaker). Optionally rescale to 0–100. Match to each bag’s 14-dim vector using cosine similarity; return Top-3 with explanations citing top-weighted cues."
+  },
+  "output": "Top 3 matches with Result Label, Bag/Artwork Name, URL, and a Why-It-Fits summary."
+}

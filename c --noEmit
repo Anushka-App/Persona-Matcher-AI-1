@@ -1,0 +1,10 @@
+[33mf21b8a5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m updated code
+[33m4e1f99b[m fixed the code
+[33mb520eab[m Merge branch 'main' of https://github.com/karthik-ak-Git/Persona-Matcher-AI-1
+[33m0fbde72[m updated the share option and minimal changes
+[33m4e941c3[m Update upload flow question 2: Changed to occasion-based question with 6 specific options for better user preference understanding
+[33ma90ff03[m backend implemented
+[33m74d1b97[m Major UI/UX updates: Enhanced upload flow with questions, updated navigation labels, added hero banners, improved conditional button rendering, and new components for better user experience
+[33mf1480c4[m feat: personality report as page, wire navigation from quiz, restyle popup/page; route adjustments; link report to product flow
+[33m9e5dc13[m updated code
+[33m7982150[m full code

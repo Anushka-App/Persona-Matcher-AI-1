@@ -1,0 +1,156 @@
+{
+  "dimensions": {
+    "style": [
+      "Boldness",
+      "Elegance",
+      "Whimsy",
+      "Minimalism",
+      "Artistic Flair",
+      "Nature Affinity",
+      "Luxury Leaning",
+      "Versatility",
+      "Color Playfulness"
+    ],
+    "aaker": [
+      "Sincerity",
+      "Excitement",
+      "Competence",
+      "Sophistication",
+      "Ruggedness"
+    ]
+  },
+  "graph": {
+    "root": "Q1",
+    "nodes": {
+      "Q1": {
+        "branch": "Core Energy",
+        "question": "Which description feels most like you right now?",
+        "options": [
+          { "text": "Adventurous and energetic", "weights": { "Boldness": 14, "Excitement": 10, "Ruggedness": 6 }, "next": "Q2A" },
+          { "text": "Imaginative and expressive", "weights": { "Artistic Flair": 14, "Whimsy": 8, "Color Playfulness": 6 }, "next": "Q2B" },
+          { "text": "Calm and composed", "weights": { "Elegance": 12, "Minimalism": 10, "Sincerity": 6 }, "next": "Q2C" },
+          { "text": "Thoughtful and introspective", "weights": { "Sincerity": 10, "Competence": 8, "Whimsy": 4 }, "next": "Q2D" }
+        ]
+      },
+      "Q2A": {
+        "branch": "A — Adventurous",
+        "question": "When starting something new, you tend to…",
+        "options": [
+          { "text": "Dive in and learn by doing", "weights": { "Boldness": 12, "Excitement": 10, "Competence": 4 }, "next": "Q3A" },
+          { "text": "Map it out with a few milestones", "weights": { "Competence": 10, "Versatility": 8, "Minimalism": 4 }, "next": "Q3A" },
+          { "text": "Rally people and spark momentum", "weights": { "Excitement": 10, "Boldness": 8, "Sophistication": 4 }, "next": "Q3A" },
+          { "text": "Experiment playfully and iterate", "weights": { "Whimsy": 8, "Artistic Flair": 10, "Color Playfulness": 6 }, "next": "Q3A" }
+        ]
+      },
+      "Q3A": {
+        "branch": "A — Daily Priorities",
+        "question": "Day-to-day, you value most…",
+        "options": [
+          { "text": "Making a clear impact", "weights": { "Boldness": 10, "Excitement": 8, "Sophistication": 4 }, "next": "Q4" },
+          { "text": "Ease and practicality", "weights": { "Versatility": 12, "Competence": 8, "Minimalism": 6 }, "next": "Q4" },
+          { "text": "Quality and craft in what you choose", "weights": { "Luxury Leaning": 10, "Sophistication": 8 }, "next": "Q4" },
+          { "text": "A steady connection with nature", "weights": { "Nature Affinity": 12, "Sincerity": 6 }, "next": "Q4" }
+        ]
+      },
+      "Q2B": {
+        "branch": "B — Imaginative",
+        "question": "Creative work that moves you feels…",
+        "options": [
+          { "text": "Bold and abstract", "weights": { "Artistic Flair": 14, "Color Playfulness": 6 }, "next": "Q3B" },
+          { "text": "Delicate and nature-inspired", "weights": { "Nature Affinity": 10, "Elegance": 6, "Sincerity": 4 }, "next": "Q3B" },
+          { "text": "Celestial and dreamy", "weights": { "Whimsy": 10, "Sophistication": 6, "Excitement": 4 }, "next": "Q3B" },
+          { "text": "Expressive animals or characters", "weights": { "Boldness": 10, "Excitement": 6, "Ruggedness": 4 }, "next": "Q3B" }
+        ]
+      },
+      "Q3B": {
+        "branch": "B — Mood Palette",
+        "question": "Your mood is most at home with…",
+        "options": [
+          { "text": "Vibrant, high-contrast tones", "weights": { "Color Playfulness": 12, "Boldness": 8, "Excitement": 6 }, "next": "Q4" },
+          { "text": "Painterly, nuanced shades", "weights": { "Artistic Flair": 10, "Sophistication": 6 }, "next": "Q4" },
+          { "text": "Soft, calming neutrals", "weights": { "Minimalism": 10, "Versatility": 8, "Sincerity": 4 }, "next": "Q4" },
+          { "text": "Deep, rich jewel tones", "weights": { "Luxury Leaning": 10, "Sophistication": 8 }, "next": "Q4" }
+        ]
+      },
+      "Q2C": {
+        "branch": "C — Composed",
+        "question": "In your routine, which approach fits best?",
+        "options": [
+          { "text": "Simple, streamlined steps", "weights": { "Minimalism": 10, "Versatility": 10, "Competence": 6 }, "next": "Q3C" },
+          { "text": "Structured with clear boundaries", "weights": { "Elegance": 10, "Sophistication": 8, "Competence": 6 }, "next": "Q3C" },
+          { "text": "Organized and reliable", "weights": { "Competence": 10, "Versatility": 10 }, "next": "Q3C" },
+          { "text": "Compact and hands-free", "weights": { "Versatility": 8, "Ruggedness": 6, "Excitement": 4 }, "next": "Q3C" }
+        ]
+      },
+      "Q3C": {
+        "branch": "C — Signature Detail",
+        "question": "A detail you naturally notice is…",
+        "options": [
+          { "text": "Clean lines and clarity", "weights": { "Minimalism": 10, "Elegance": 8 }, "next": "Q4" },
+          { "text": "Subtle motifs from nature", "weights": { "Sincerity": 6, "Nature Affinity": 6 }, "next": "Q4" },
+          { "text": "Smart, hidden functionality", "weights": { "Competence": 10, "Versatility": 8 }, "next": "Q4" },
+          { "text": "A refined metallic accent", "weights": { "Luxury Leaning": 8, "Sophistication": 6 }, "next": "Q4" }
+        ]
+      },
+      "Q2D": {
+        "branch": "D — Reflective",
+        "question": "A symbol that resonates most:",
+        "options": [
+          { "text": "Lotus (renewal, presence)", "weights": { "Nature Affinity": 10, "Sincerity": 6, "Sophistication": 6 }, "next": "Q3D" },
+          { "text": "Moon & stars (wonder)", "weights": { "Whimsy": 10, "Sophistication": 6, "Excitement": 4 }, "next": "Q3D" },
+          { "text": "Wings (care, uplift)", "weights": { "Sincerity": 8, "Elegance": 6, "Sophistication": 4 }, "next": "Q3D" },
+          { "text": "Owl (wisdom)", "weights": { "Sincerity": 6, "Competence": 6, "Whimsy": 4 }, "next": "Q3D" }
+        ]
+      },
+      "Q3D": {
+        "branch": "D — Texture Preference",
+        "question": "Which texture draws you in?",
+        "options": [
+          { "text": "Soft, matte finishes", "weights": { "Sincerity": 6, "Minimalism": 8 }, "next": "Q4" },
+          { "text": "Velvety sheen", "weights": { "Luxury Leaning": 10, "Sophistication": 8 }, "next": "Q4" },
+          { "text": "Brushed metal elements", "weights": { "Sophistication": 8, "Competence": 6 }, "next": "Q4" },
+          { "text": "Expressive stitching", "weights": { "Artistic Flair": 8, "Sincerity": 6 }, "next": "Q4" }
+        ]
+      },
+      "Q4": {
+        "branch": "E — Final Calibrator (1)",
+        "question": "In choices that matter, you won’t compromise on…",
+        "options": [
+          { "text": "Making a statement true to you", "weights": { "Boldness": 10, "Excitement": 8 }, "next": "Q5" },
+          { "text": "Quality and craft", "weights": { "Sophistication": 8, "Luxury Leaning": 10 }, "next": "Q5" },
+          { "text": "Ease and organization", "weights": { "Versatility": 10, "Competence": 8 }, "next": "Q5" },
+          { "text": "A calm, nature-led feel", "weights": { "Nature Affinity": 10, "Sincerity": 8 }, "next": "Q5" }
+        ]
+      },
+      "Q5": {
+        "branch": "F — Fine-Tune (2)",
+        "question": "When under time pressure, you naturally…",
+        "options": [
+          { "text": "Trust your gut and move", "weights": { "Boldness": 8, "Excitement": 6 }, "next": "Q6" },
+          { "text": "Lean on structure and systems", "weights": { "Competence": 8, "Minimalism": 6 }, "next": "Q6" },
+          { "text": "Keep things elegant and composed", "weights": { "Elegance": 8, "Sophistication": 6 }, "next": "Q6" },
+          { "text": "Find a playful, creative workaround", "weights": { "Artistic Flair": 8, "Whimsy": 6 }, "next": "Q6" }
+        ]
+      },
+      "Q6": {
+        "branch": "G — Context Lens (3)",
+        "question": "When collaborating with others, you usually…",
+        "options": [
+          { "text": "Energize the group and take initiative", "weights": { "Excitement": 8, "Boldness": 6 }, "next": "END" },
+          { "text": "Organize roles and keep flow clear", "weights": { "Competence": 8, "Versatility": 6 }, "next": "END" },
+          { "text": "Uplift tone and keep it gracious", "weights": { "Elegance": 8, "Sincerity": 6 }, "next": "END" },
+          { "text": "Add creative sparks and reframe ideas", "weights": { "Artistic Flair": 8, "Whimsy": 6 }, "next": "END" }
+        ]
+      }
+    },
+    "stop_rule": { "max_questions": 12, "min_entropy": 0.22 }
+  },
+  "scoring": {
+    "similarity": "cosine",
+    "tie_breakers": ["Boldness", "Artistic Flair", "Sophistication"],
+    "how_to_score": "Sum option weights across nodes visited to produce a 14-dim user vector (9 style + 5 Aaker). Optionally rescale to 0–100."
+  },
+  "output": "Personality-only report with tree-journey and trait hierarchy."
+}
+
+

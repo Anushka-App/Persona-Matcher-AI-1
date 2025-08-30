@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personality Quiz - Find Your Perfect Bag</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .quiz-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        .result-enter {
+            animation: slideInUp 0.6s ease-out;
+        }
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <div class="quiz-container flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="bg-white rounded-xl card-shadow p-8 text-center transition-all duration-500 opacity-100">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Discover Your Style Personality</h1>
+                <p class="text-lg text-gray-600 mb-8">Find the perfect bag that matches your unique personality and style preferences</p>
+                <button onclick="startQuiz()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200 text-lg">
+                    Start Quiz
+                </button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="bg-white rounded-xl card-shadow p-8 transition-all duration-500 opacity-0 hidden">
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm font-medium text-purple-600">Question <span id="current-question">1</span> of <span id="total-questions">5</span></span>
+                        <div class="w-full bg-gray-200 rounded-full h-2 ml-4">
+                            <div id="progress-bar" class="bg-purple-600 h-2 rounded-full transition-all duration-300" style="width: 20%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="question-container">
+                    <h2 id="question-text" class="text-2xl font-bold text-gray-800 mb-6"></h2>
+                    <div id="options-container" class="space-y-4 mb-8">
+                        <!-- Options will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <button id="next-button" onclick="nextQuestion()" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-lg transition-all duration-200 cursor-not-allowed">
+                    Next Question
+                </button>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="bg-white rounded-xl card-shadow p-8 transition-all duration-500 opacity-0 hidden result-enter">
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">Your Style Personality</h1>
+                    <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg p-6 mb-6">
+                        <h2 id="personality-name" class="text-3xl font-bold mb-2"></h2>
+                        <p id="personality-summary" class="text-lg opacity-90"></p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Perfect Bag Matches</h3>
+                    <div id="bag-recommendations" class="grid gap-4 md:grid-cols-1">
+                        <!-- Bag recommendations will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="text-center space-y-4">
+                    <button id="share-button" onclick="shareResult()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200">
+                        Share Your Result
+                    </button>
+                    <button onclick="restartQuiz()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-200 ml-4">
+                        Take Quiz Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data Structure
+        const quizData = {
+            "graph": {
+                "root": "Q1",
+                "nodes": {
+                    "Q1": {
+                        "branch": "Wild vs Refined Energy",
+                        "question": "When you make an entrance, which energy feels right?",
+                        "options": [
+                            {
+                                "text": "Untamed and kinetic",
+                                "weights": {
+                                    "Boldness": 14,
+                                    "Excitement": 10,
+                                    "Ruggedness": 6
+                                },
+                                "next": "Q2A"
+                            },
+                            {
+                                "text": "Artful and intriguing",
+                                "weights": {
+                                    "Artistic Flair": 14,
+                                    "Sophistication": 6,
+                                    "Color Playfulness": 4
+                                },
+                                "next": "Q2B"
+                            },
+                            {
+                                "text": "Calm and composed",
+                                "weights": {
+                                    "Elegance": 12,
+                                    "Minimalism": 10,
+                                    "Sincerity": 6
+                                },
+                                "next": "Q2C"
+                            },
+                            {
+                                "text": "Quiet but luminous",
+                                "weights": {
+                                    "Whimsy": 10,
+                                    "Sincerity": 6,
+                                    "Sophistication": 4
+                                },
+                                "next": "Q2D"
+                            }
+                        ]
+                    },
+                    "Q2A": {
+                        "question": "Pick a motif you would actually wear:",
+                        "options": [
+                            {
+                                "text": "Leopard or tiger",
+                                "weights": {
+                                    "Boldness": 12,
+                                    "Excitement": 10,
+                                    "Ruggedness": 6,
+                                    "Color Playfulness": 4
+                                },
+                                "next": "Q3A"
+                            },
+                            {
+                                "text": "Jungle leaves",
+                                "weights": {
+                                    "Nature Affinity": 12,
+                                    "Boldness": 6,
+                                    "Versatility": 4
+                                },
+                                "next": "Q3A"
+                            },
+                            {
+                                "text": "Sunburst geometrics",
+                                "weights": {
+                                    "Color Playfulness": 10,
+                                    "Boldness": 8,
+                                    "Excitement": 6
+                                },
+                                "next": "Q3A"
+                            },
+                            {
+                                "text": "Trail-worn textures",
+                                "weights": {
+                                    "Ruggedness": 10,
+                                    "Minimalism": 6,
+                                    "Competence": 6
+                                },
+                                "next": "Q3A"
+                            }
+                        ]
+                    },
+                    "Q3A": {
+                        "question": "What matters more day-to-day?",
+                        "options": [
+                            {
+                                "text": "Making a statement",
+                                "weights": {
+                                    "Boldness": 10,
+                                    "Excitement": 8,
+                                    "Sophistication": 4
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Hands-free practicality",
+                                "weights": {
+                                    "Versatility": 12,
+                                    "Competence": 8,
+                                    "Minimalism": 6
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Rich materials",
+                                "weights": {
+                                    "Luxury Leaning": 12,
+                                    "Sophistication": 8
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Nature vibe, always",
+                                "weights": {
+                                    "Nature Affinity": 12,
+                                    "Sincerity": 6
+                                },
+                                "next": "Q4"
+                            }
+                        ]
+                    },
+                    "Q2B": {
+                        "question": "Art on a bag should feel…",
+                        "options": [
+                            {
+                                "text": "Abstract brushstrokes",
+                                "weights": {
+                                    "Artistic Flair": 14,
+                                    "Color Playfulness": 6
+                                },
+                                "next": "Q3B"
+                            },
+                            {
+                                "text": "Delicate florals",
+                                "weights": {
+                                    "Nature Affinity": 10,
+                                    "Elegance": 6,
+                                    "Sincerity": 4
+                                },
+                                "next": "Q3B"
+                            },
+                            {
+                                "text": "Celestial maps",
+                                "weights": {
+                                    "Whimsy": 10,
+                                    "Sophistication": 6,
+                                    "Excitement": 4
+                                },
+                                "next": "Q3B"
+                            },
+                            {
+                                "text": "Animal portraiture",
+                                "weights": {
+                                    "Boldness": 10,
+                                    "Excitement": 6,
+                                    "Ruggedness": 4
+                                },
+                                "next": "Q3B"
+                            }
+                        ]
+                    },
+                    "Q3B": {
+                        "question": "And the color mood?",
+                        "options": [
+                            {
+                                "text": "Vibrant and high-contrast",
+                                "weights": {
+                                    "Color Playfulness": 12,
+                                    "Boldness": 8,
+                                    "Excitement": 6
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Painterly and nuanced",
+                                "weights": {
+                                    "Artistic Flair": 10,
+                                    "Sophistication": 6
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Soft, calm neutrals",
+                                "weights": {
+                                    "Minimalism": 10,
+                                    "Versatility": 8,
+                                    "Sincerity": 4
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Deep jewel tones",
+                                "weights": {
+                                    "Luxury Leaning": 10,
+                                    "Sophistication": 8
+                                },
+                                "next": "Q4"
+                            }
+                        ]
+                    },
+                    "Q2C": {
+                        "question": "Which silhouette wins most days?",
+                        "options": [
+                            {
+                                "text": "Slim crossbody",
+                                "weights": {
+                                    "Minimalism": 10,
+                                    "Versatility": 10,
+                                    "Competence": 6
+                                },
+                                "next": "Q3C"
+                            },
+                            {
+                                "text": "Structured satchel",
+                                "weights": {
+                                    "Elegance": 10,
+                                    "Sophistication": 8,
+                                    "Competence": 6
+                                },
+                                "next": "Q3C"
+                            },
+                            {
+                                "text": "Organized tote",
+                                "weights": {
+                                    "Competence": 10,
+                                    "Versatility": 10
+                                },
+                                "next": "Q3C"
+                            },
+                            {
+                                "text": "Compact backpack",
+                                "weights": {
+                                    "Versatility": 8,
+                                    "Ruggedness": 6,
+                                    "Excitement": 4
+                                },
+                                "next": "Q3C"
+                            }
+                        ]
+                    },
+                    "Q3C": {
+                        "question": "Your signature detail is…",
+                        "options": [
+                            {
+                                "text": "A clean line",
+                                "weights": {
+                                    "Minimalism": 10,
+                                    "Elegance": 8
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "A subtle motif",
+                                "weights": {
+                                    "Sincerity": 6,
+                                    "Nature Affinity": 6
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "A hidden pocket",
+                                "weights": {
+                                    "Competence": 10,
+                                    "Versatility": 8
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "A small metal accent",
+                                "weights": {
+                                    "Luxury Leaning": 8,
+                                    "Sophistication": 6
+                                },
+                                "next": "Q4"
+                            }
+                        ]
+                    },
+                    "Q2D": {
+                        "question": "Which symbol feels truest?",
+                        "options": [
+                            {
+                                "text": "Lotus",
+                                "weights": {
+                                    "Nature Affinity": 10,
+                                    "Sincerity": 6,
+                                    "Sophistication": 6
+                                },
+                                "next": "Q3D"
+                            },
+                            {
+                                "text": "Moon & stars",
+                                "weights": {
+                                    "Whimsy": 10,
+                                    "Sophistication": 6,
+                                    "Excitement": 4
+                                },
+                                "next": "Q3D"
+                            },
+                            {
+                                "text": "Angel wings",
+                                "weights": {
+                                    "Sincerity": 8,
+                                    "Elegance": 6,
+                                    "Sophistication": 4
+                                },
+                                "next": "Q3D"
+                            },
+                            {
+                                "text": "Owl",
+                                "weights": {
+                                    "Sincerity": 6,
+                                    "Competence": 6,
+                                    "Whimsy": 4
+                                },
+                                "next": "Q3D"
+                            }
+                        ]
+                    },
+                    "Q3D": {
+                        "question": "Pick your finish priority:",
+                        "options": [
+                            {
+                                "text": "Soft-touch, matte",
+                                "weights": {
+                                    "Sincerity": 6,
+                                    "Minimalism": 8
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Velvety sheen",
+                                "weights": {
+                                    "Luxury Leaning": 10,
+                                    "Sophistication": 8
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Brushed hardware",
+                                "weights": {
+                                    "Sophistication": 8,
+                                    "Competence": 6
+                                },
+                                "next": "Q4"
+                            },
+                            {
+                                "text": "Sculpted stitching",
+                                "weights": {
+                                    "Artistic Flair": 8,
+                                    "Sincerity": 6
+                                },
+                                "next": "Q4"
+                            }
+                        ]
+                    },
+                    "Q4": {
+                        "question": "Last call—what do you never compromise on?",
+                        "options": [
+                            {
+                                "text": "Statement value",
+                                "weights": {
+                                    "Boldness": 10,
+                                    "Excitement": 8
+                                },
+                                "next": "END"
+                            },
+                            {
+                                "text": "Craft and quality",
+                                "weights": {
+                                    "Sophistication": 8,
+                                    "Luxury Leaning": 10
+                                },
+                                "next": "END"
+                            },
+                            {
+                                "text": "Ease and organization",
+                                "weights": {
+                                    "Versatility": 10,
+                                    "Competence": 8
+                                },
+                                "next": "END"
+                            },
+                            {
+                                "text": "Calm, nature-led vibe",
+                                "weights": {
+                                    "Nature Affinity": 10,
+                                    "Sincerity": 8
+                                },
+                                "next": "END"
+                            }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // Sample bag recommendations data
+        const bagRecommendations = {
+            "The Wild Maverick": {
+                "summary": "You navigate by instinct and intention, and you like your pieces to earn their place. Your style leans toward boldness, artistic flair, and nature affinity.",
+                "matches": [
+                    { "name": "Abstract Leopard", "desc": "Quiet confidence with sudden power - perfect for your expressive yet meaningful style.", "url": "https://anuschkaleather.in/collections/abstract-leopard" },
+                    { "name": "Floral Statement Tote", "desc": "Bold florals that showcase your artistic nature connection.", "url": "#" },
+                    { "name": "Textured Earth Crossbody", "desc": "Rugged elegance for your hands-free adventures.", "url": "#" }
+                ]
+            },
+            "The Artistic Sophisticate": {
+                "summary": "You appreciate nuanced beauty and sophisticated details. Your style combines artistic flair with refined elegance.",
+                "matches": [
+                    { "name": "Abstract Brushstroke Satchel", "desc": "Painterly artistry meets sophisticated functionality.", "url": "#" },
+                    { "name": "Celestial Collection Bag", "desc": "Whimsical celestial maps for your creative spirit.", "url": "#" },
+                    { "name": "Jewel Tone Clutch", "desc": "Deep, rich colors that speak to your sophisticated taste.", "url": "#" }
+                ]
+            },
+            "The Refined Minimalist": {
+                "summary": "You value clean lines, thoughtful design, and versatile functionality. Your style is calm, composed, and effortlessly elegant.",
+                "matches": [
+                    { "name": "Clean Line Crossbody", "desc": "Minimalist perfection for your streamlined lifestyle.", "url": "#" },
+                    { "name": "Structured Professional Satchel", "desc": "Elegant sophistication for your organized world.", "url": "#" },
+                    { "name": "Hidden Pocket Tote", "desc": "Thoughtful design with practical, unobtrusive details.", "url": "#" }
+                ]
+            },
+            "The Luminous Dreamer": {
+                "summary": "You possess quiet strength and gentle wisdom. Your style reflects sincerity, natural beauty, and sophisticated whimsy.",
+                "matches": [
+                    { "name": "Lotus Symbol Bag", "desc": "Nature's wisdom meets your sincere, grounded spirit.", "url": "#" },
+                    { "name": "Moon & Stars Collection", "desc": "Celestial whimsy for your luminous, dreamy nature.", "url": "#" },
+                    { "name": "Soft-Touch Matte Bag", "desc": "Gentle textures that match your calm, composed energy.", "url": "#" }
+                ]
+            }
+        };
+
+        // Quiz State
+        let currentNode = "Q1";
+        let questionNumber = 1;
+        let userScores = {
+            "Boldness": 0, "Elegance": 0, "Whimsy": 0, "Minimalism": 0,
+            "Artistic Flair": 0, "Nature Affinity": 0, "Luxury Leaning": 0,
+            "Versatility": 0, "Color Playfulness": 0, "Sincerity": 0,
+            "Excitement": 0, "Competence": 0, "Sophistication": 0, "Ruggedness": 0
+        };
+        let selectedOption = null;
+
+        function startQuiz() {
+            document.getElementById('welcome-screen').classList.add('opacity-0', 'hidden');
+            setTimeout(() => {
+                document.getElementById('quiz-screen').classList.remove('opacity-0', 'hidden');
+                document.getElementById('quiz-screen').classList.add('opacity-100');
+                loadQuestion();
+            }, 300);
+        }
+
+        function loadQuestion() {
+            const node = quizData.graph.nodes[currentNode];
+            if (!node) return;
+
+            document.getElementById('question-text').textContent = node.question;
+            document.getElementById('current-question').textContent = questionNumber;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            node.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option-card bg-gray-50 hover:bg-purple-50 border-2 border-gray-200 hover:border-purple-300 rounded-lg p-4 cursor-pointer transition-all duration-200';
+                optionDiv.innerHTML = `
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="quiz-option" value="${index}" class="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500">
+                        <span class="ml-3 text-gray-800 font-medium">${option.text}</span>
+                    </label>
+                `;
+                
+                optionDiv.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(index) {
+            selectedOption = index;
+            
+            // Visual feedback
+            document.querySelectorAll('.option-card').forEach((card, i) => {
+                if (i === index) {
+                    card.classList.add('bg-purple-100', 'border-purple-500');
+                    card.classList.remove('bg-gray-50', 'border-gray-200');
+                } else {
+                    card.classList.remove('bg-purple-100', 'border-purple-500');
+                    card.classList.add('bg-gray-50', 'border-gray-200');
+                }
+            });
+
+            document.querySelector(`input[value="${index}"]`).checked = true;
+            
+            // Enable next button
+            const nextButton = document.getElementById('next-button');
+            nextButton.disabled = false;
+            nextButton.className = 'w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 cursor-pointer';
+        }
+
+        function nextQuestion() {
+            if (selectedOption === null) return;
+
+            const node = quizData.graph.nodes[currentNode];
+            const selectedOptionData = node.options[selectedOption];
+
+            // Add weights to user scores
+            Object.keys(selectedOptionData.weights).forEach(trait => {
+                userScores[trait] += selectedOptionData.weights[trait];
+            });
+
+            // Move to next question or end
+            if (selectedOptionData.next === "END") {
+                showResults();
+            } else {
+                currentNode = selectedOptionData.next;
+                questionNumber++;
+                selectedOption = null;
+                
+                // Reset next button
+                const nextButton = document.getElementById('next-button');
+                nextButton.disabled = true;
+                nextButton.className = 'w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-lg transition-all duration-200 cursor-not-allowed';
+                
+                loadQuestion();
+            }
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progress = (questionNumber / 5) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function calculatePersonality() {
+            // Simple personality calculation based on top traits
+            const topTraits = Object.keys(userScores)
+                .sort((a, b) => userScores[b] - userScores[a])
+                .slice(0, 3);
+
+            // Determine personality type based on dominant traits
+            if (topTraits.includes('Boldness') && topTraits.includes('Artistic Flair')) {
+                return 'The Wild Maverick';
+            } else if (topTraits.includes('Artistic Flair') && topTraits.includes('Sophistication')) {
+                return 'The Artistic Sophisticate';
+            } else if (topTraits.includes('Minimalism') && topTraits.includes('Elegance')) {
+                return 'The Refined Minimalist';
+            } else if (topTraits.includes('Whimsy') && topTraits.includes('Sincerity')) {
+                return 'The Luminous Dreamer';
+            } else {
+                // Default based on highest single trait
+                const topTrait = topTraits[0];
+                if (['Boldness', 'Excitement', 'Ruggedness'].includes(topTrait)) {
+                    return 'The Wild Maverick';
+                } else if (['Artistic Flair', 'Color Playfulness'].includes(topTrait)) {
+                    return 'The Artistic Sophisticate';
+                } else if (['Minimalism', 'Elegance', 'Competence'].includes(topTrait)) {
+                    return 'The Refined Minimalist';
+                } else {
+                    return 'The Luminous Dreamer';
+                }
+            }
+        }
+
+        function showResults() {
+            const personality = calculatePersonality();
+            const personalityData = bagRecommendations[personality];
+
+            document.getElementById('quiz-screen').classList.add('opacity-0', 'hidden');
+            
+            setTimeout(() => {
+                document.getElementById('personality-name').textContent = personality;
+                document.getElementById('personality-summary').textContent = personalityData.summary;
+
+                const bagContainer = document.getElementById('bag-recommendations');
+                bagContainer.innerHTML = '';
+
+                personalityData.matches.forEach(bag => {
+                    const bagCard = document.createElement('div');
+                    bagCard.className = 'bg-gray-50 rounded-lg p-6 border border-gray-200';
+                    bagCard.innerHTML = `
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">${bag.name}</h4>
+                        <p class="text-gray-600 mb-3">${bag.desc}</p>
+                        <a href="${bag.url}" target="_blank" class="text-purple-600 hover:text-purple-800 font-medium">View Collection →</a>
+                    `;
+                    bagContainer.appendChild(bagCard);
+                });
+
+                document.getElementById('results-screen').classList.remove('opacity-0', 'hidden');
+                document.getElementById('results-screen').classList.add('opacity-100');
+            }, 300);
+        }
+
+        function shareResult() {
+            const personality = document.getElementById('personality-name').textContent;
+            const text = `I just discovered my style personality: ${personality}! 🎨✨ Find out yours with this amazing personality quiz. #StylePersonality #PerfectBag #PersonalityQuiz`;
+            const url = encodeURIComponent(window.location.href);
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
+            window.open(twitterUrl, '_blank');
+        }
+
+        function restartQuiz() {
+            // Reset quiz state
+            currentNode = "Q1";
+            questionNumber = 1;
+            selectedOption = null;
+            userScores = {
+                "Boldness": 0, "Elegance": 0, "Whimsy": 0, "Minimalism": 0,
+                "Artistic Flair": 0, "Nature Affinity": 0, "Luxury Leaning": 0,
+                "Versatility": 0, "Color Playfulness": 0, "Sincerity": 0,
+                "Excitement": 0, "Competence": 0, "Sophistication": 0, "Ruggedness": 0
+            };
+
+            // Show welcome screen
+            document.getElementById('results-screen').classList.add('opacity-0', 'hidden');
+            setTimeout(() => {
+                document.getElementById('welcome-screen').classList.remove('opacity-0', 'hidden');
+                document.getElementById('welcome-screen').classList.add('opacity-100');
+            }, 300);
+        }
+    </script>
+</body>
+</html>

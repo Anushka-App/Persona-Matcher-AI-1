@@ -1,0 +1,2 @@
+user_id,name,email,phone,password_hash,membership_tier,user_cookie_id,is_new_user,account_created_date,last_login_date,login_count,user_agent,ip_address,user_location
+995028d7-61ec-4cad-a97c-9aae6d2c88ef,Atinarapu Karthik,karthik986340@gmail.com,9492421154,YWstMDQ3LWFr,Gold Benefits,user_1755426428982_gh4hssfwv,,2025-08-17T10:47:39.628Z,2025-08-17T10:47:39.628Z,1,Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0,::1,

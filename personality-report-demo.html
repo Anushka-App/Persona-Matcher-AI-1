@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personality Report Generator - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .array-input {
+            margin-bottom: 10px;
+        }
+
+        .array-input .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .array-input input {
+            flex: 1;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tab:not(.active):hover {
+            background: #e9ecef;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .report-section {
+            margin-bottom: 25px;
+        }
+
+        .report-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .report-section p {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .recommendations {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .recommendation-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Personality Report Generator</h1>
+            <p>Generate detailed personality profiles based on user input or quiz results</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('manual')">Manual Input</div>
+            <div class="tab" onclick="switchTab('quiz')">Quiz-Based</div>
+        </div>
+
+        <!-- Input Form -->
+        <div class="card">
+            <h2>Personal Information</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                <span id="form-description-manual">Fill in your details to generate a personalized personality report</span>
+                <span id="form-description-quiz" class="hidden">Provide basic information and we'll generate a report based on quiz-style analysis</span>
+            </p>
+
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="communication_style">Communication Style *</label>
+                <input type="text" id="communication_style" placeholder="e.g., direct, empathetic, analytical" required>
+            </div>
+
+            <div class="form-group">
+                <label>Hobbies & Interests *</label>
+                <div id="hobbies-container" class="array-input">
+                    <div class="input-row">
+                        <input type="text" placeholder="e.g., reading, hiking, photography" required>
+                        <button class="btn btn-danger btn-small" onclick="removeArrayItem('hobbies', this)" disabled>Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="addArrayItem('hobbies')">Add Hobby</button>
+            </div>
+
+            <div class="form-group">
+                <label>Favorite Books & Movies *</label>
+                <div id="favorite_books_movies-container" class="array-input">
+                    <div class="input-row">
+                        <input type="text" placeholder="e.g., The Alchemist, Inception" required>
+                        <button class="btn btn-danger btn-small" onclick="removeArrayItem('favorite_books_movies', this)" disabled>Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="addArrayItem('favorite_books_movies')">Add Book/Movie</button>
+            </div>
+
+            <div class="form-group">
+                <label>Strengths *</label>
+                <div id="strengths-container" class="array-input">
+                    <div class="input-row">
+                        <input type="text" placeholder="e.g., creativity, leadership, empathy" required>
+                        <button class="btn btn-danger btn-small" onclick="removeArrayItem('strengths', this)" disabled>Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="addArrayItem('strengths')">Add Strength</button>
+            </div>
+
+            <div class="form-group">
+                <label>Areas for Growth *</label>
+                <div id="weaknesses-container" class="array-input">
+                    <div class="input-row">
+                        <input type="text" placeholder="e.g., patience, organization, confidence" required>
+                        <button class="input-row">
+                        <button class="btn btn-danger btn-small" onclick="removeArrayItem('weaknesses', this)" disabled>Remove</button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="addArrayItem('weaknesses')">Add Growth Area</button>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button class="btn" id="generate-btn" onclick="generateReport()">
+                    <span id="btn-text">Generate Report</span>
+                </button>
+                <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div id="error-message" class="error hidden"></div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="success hidden">
+            Report generated successfully! Scroll down to view your personalized personality profile.
+        </div>
+
+        <!-- Report Display -->
+        <div id="report-container" class="card hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="report-title">Personality Report</h2>
+                <button class="btn btn-secondary btn-small" onclick="downloadReport()">Download Report</button>
+            </div>
+            
+            <div id="report-content"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'manual';
+        let currentReport = null;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab styling
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update form description
+            document.getElementById('form-description-manual').classList.toggle('hidden', tab !== 'manual');
+            document.getElementById('form-description-quiz').classList.toggle('hidden', tab !== 'quiz');
+            
+            // Update button text
+            const btnText = document.getElementById('btn-text');
+            btnText.textContent = tab === 'manual' ? 'Generate Report' : 'Generate from Quiz';
+        }
+
+        function addArrayItem(field) {
+            const container = document.getElementById(`${field}-container`);
+            const inputRow = document.createElement('div');
+            inputRow.className = 'input-row';
+            
+            inputRow.innerHTML = `
+                <input type="text" placeholder="Enter ${field.replace(/_/g, ' ')}" required>
+                <button class="btn btn-danger btn-small" onclick="removeArrayItem('${field}', this)">Remove</button>
+            `;
+            
+            container.appendChild(inputRow);
+            updateRemoveButtons();
+        }
+
+        function removeArrayItem(field, button) {
+            button.parentElement.remove();
+            updateRemoveButtons();
+        }
+
+        function updateRemoveButtons() {
+            document.querySelectorAll('.array-input').forEach(container => {
+                const removeButtons = container.querySelectorAll('.btn-danger');
+                removeButtons.forEach((btn, index) => {
+                    btn.disabled = removeButtons.length === 1;
+                });
+            });
+        }
+
+        function getFormData() {
+            const data = {
+                name: document.getElementById('name').value.trim(),
+                communication_style: document.getElementById('communication_style').value.trim(),
+                hobbies: [],
+                favorite_books_movies: [],
+                strengths: [],
+                weaknesses: []
+            };
+
+            // Collect array inputs
+            ['hobbies', 'favorite_books_movies', 'strengths', 'weaknesses'].forEach(field => {
+                const container = document.getElementById(`${field}-container`);
+                container.querySelectorAll('input').forEach(input => {
+                    if (input.value.trim()) {
+                        data[field].push(input.value.trim());
+                    }
+                });
+            });
+
+            return data;
+        }
+
+        function validateForm(data) {
+            if (!data.name) return 'Name is required';
+            if (!data.communication_style) return 'Communication style is required';
+            if (data.hobbies.length === 0) return 'At least one hobby is required';
+            if (data.favorite_books_movies.length === 0) return 'At least one favorite book/movie is required';
+            if (data.strengths.length === 0) return 'At least one strength is required';
+            if (data.weaknesses.length === 0) return 'At least one growth area is required';
+            return null;
+        }
+
+        async function generateReport() {
+            const data = getFormData();
+            const error = validateForm(data);
+            
+            if (error) {
+                showError(error);
+                return;
+            }
+
+            setLoading(true);
+            hideMessages();
+
+            try {
+                let endpoint = '/api/personality-report/generate';
+                let requestBody = data;
+
+                if (currentTab === 'quiz') {
+                    endpoint = '/api/personality-report/generate-from-quiz';
+                    requestBody = {
+                        quizAnswers: [
+                            { question: "What do you enjoy doing in your free time?", selected_personality: data.hobbies[0] || "various activities" },
+                            { question: "How do you prefer to communicate?", selected_personality: data.communication_style },
+                            { question: "What type of media do you enjoy?", selected_personality: data.favorite_books_movies[0] || "diverse genres" },
+                            { question: "What are your main strengths?", selected_personality: data.strengths[0] || "adaptability" },
+                            { question: "What areas would you like to improve?", selected_personality: data.weaknesses[0] || "personal growth" }
+                        ],
+                        userInfo: { name: data.name }
+                    };
+                }
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Failed to generate report');
+                }
+
+                currentReport = currentTab === 'quiz' ? result.data.report : result.data;
+                displayReport(currentReport);
+                showSuccess();
+                
+            } catch (err) {
+                showError(err.message || 'An error occurred while generating the report');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function setLoading(loading) {
+            const btn = document.getElementById('generate-btn');
+            const btnText = document.getElementById('btn-text');
+            
+            if (loading) {
+                btn.disabled = true;
+                btnText.innerHTML = '<span class="loading"></span>Generating Report...';
+            } else {
+                btn.disabled = false;
+                btnText.textContent = currentTab === 'manual' ? 'Generate Report' : 'Generate from Quiz';
+            }
+        }
+
+        function displayReport(report) {
+            const container = document.getElementById('report-container');
+            const title = document.getElementById('report-title');
+            const content = document.getElementById('report-content');
+            
+            title.textContent = `Personality Report for ${getFormData().name}`;
+            
+            content.innerHTML = `
+                <div class="report-section">
+                    <h3>Introduction</h3>
+                    <p>${report.introduction}</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Hobbies Analysis</h3>
+                    <p>${report.hobbies_analysis}</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Communication Analysis</h3>
+                    <p>${report.communication_analysis}</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Media Preferences Analysis</h3>
+                    <p>${report.media_preferences_analysis}</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Strengths & Growth Areas</h3>
+                    <p>${report.strengths_weaknesses_analysis}</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Conclusion</h3>
+                    <p>${report.conclusion}</p>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Personalized Recommendations</h3>
+                    <div class="recommendations">
+                        ${report.personalized_recommendations.map((rec, index) => `
+                            <div class="recommendation-item">
+                                <div class="recommendation-number">${index + 1}</div>
+                                <p>${rec}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            container.classList.remove('hidden');
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadReport() {
+            if (!currentReport) return;
+            
+            const data = getFormData();
+            const reportText = `
+PERSONALITY REPORT FOR ${data.name.toUpperCase()}
+
+${currentReport.introduction}
+
+HOBBIES ANALYSIS:
+${currentReport.hobbies_analysis}
+
+COMMUNICATION ANALYSIS:
+${currentReport.communication_analysis}
+
+MEDIA PREFERENCES ANALYSIS:
+${currentReport.media_preferences_analysis}
+
+STRENGTHS AND WEAKNESSES ANALYSIS:
+${currentReport.strengths_weaknesses_analysis}
+
+CONCLUSION:
+${currentReport.conclusion}
+
+PERSONALIZED RECOMMENDATIONS:
+${currentReport.personalized_recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n')}
+
+Generated on: ${new Date().toLocaleDateString()}
+            `;
+
+            const blob = new Blob([reportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `personality-report-${data.name.toLowerCase().replace(/\s+/g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function resetForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('communication_style').value = '';
+            
+            ['hobbies', 'favorite_books_movies', 'strengths', 'weaknesses'].forEach(field => {
+                const container = document.getElementById(`${field}-container`);
+                container.innerHTML = `
+                    <div class="input-row">
+                        <input type="text" placeholder="Enter ${field.replace(/_/g, ' ')}" required>
+                        <button class="btn btn-danger btn-small" onclick="removeArrayItem('${field}', this)" disabled>Remove</button>
+                    </div>
+                `;
+            });
+            
+            hideMessages();
+            document.getElementById('report-container').classList.add('hidden');
+            currentReport = null;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        function showSuccess() {
+            const successDiv = document.getElementById('success-message');
+            successDiv.classList.remove('hidden');
+        }
+
+        function hideMessages() {
+            document.getElementById('error-message').classList.add('hidden');
+            document.getElementById('success-message').classList.add('hidden');
+        }
+
+        // Initialize form
+        updateRemoveButtons();
+    </script>
+</body>
+</html>

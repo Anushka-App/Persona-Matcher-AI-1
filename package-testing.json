@@ -1,0 +1,30 @@
+{
+  "name": "persona-matcher-testing",
+  "version": "1.0.0",
+  "description": "Testing suite for Persona Matcher AI recommendation system",
+  "main": "run-tests.cjs",
+  "scripts": {
+    "test:backend": "node test-backend-agent.cjs",
+    "test:ui": "node test-ui-agent.cjs",
+    "test:all": "node run-tests.cjs",
+    "test:quick": "node test-backend-agent.cjs",
+    "install:deps": "npm install"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "puppeteer": "^21.0.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "testing",
+    "recommendation-system",
+    "persona-matcher",
+    "ai",
+    "bag-recommendations"
+  ],
+  "author": "Testing Agent",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
